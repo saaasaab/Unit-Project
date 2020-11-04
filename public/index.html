@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+
+	/** {*/
+		/*margin: 0;*/
+		/*padding: 0;*/
+	/*}*/
+
+
+	img {
+		max-width:100%;
+		max-height:100%;
+		height:auto;
+		vertical-align: middle;
+	}
+
+	*, *::after, *::before {
+	  box-sizing: border-box;
+	}
+
+	.modal {
+	  position: fixed;
+	  top: 50%;
+	  left: 50%;
+	  transform: translate(-50%, -50%) scale(0);
+	  transition: 200ms ease-in-out;
+	  border: 1px solid black;
+	  border-radius: 10px;
+	  z-index: 10;
+	  background-color: white;
+	  width: 700px;
+	  max-width: 80%;
+	  max-height: calc(100vh - 210px);
+      overflow-y: auto;
+	}
+
+	.modal.active {
+	  transform: translate(-50%, -50%) scale(1);
+
+	}
+
+	.modal-header {
+		display: grid;
+		grid-template-columns: 5fr 1fr 1fr;
+		padding: 10px 15px;
+		/*display: flex;*/
+		justify-content: space-between;
+		align-items: center;
+		border-bottom: 1px solid black;
+		padding-bottom: 20px
+	}
+
+	.modal-header .title {
+	  font-size: 1.25rem;
+	  font-weight: bold;
+	}
+
+	.modal-header .close-button {
+	  cursor: pointer;
+	  border: none;
+	  outline: none;
+	  background: none;
+	  font-size: 1.25rem;
+	  font-weight: bold;
+	}
+
+	.modal-body {
+	  padding: 10px 15px;
+	}
+
+	#overlay {
+	  position: fixed;
+	  opacity: 0;
+	  transition: 200ms ease-in-out;
+	  top: 0;
+	  left: 0;
+	  right: 0;
+	  bottom: 0;
+	  background-color: rgba(0, 0, 0, .5);
+	  pointer-events: none;
+	}
+
+	#overlay.active {
+	  opacity: 1;
+	  pointer-events: all;
+
+	}
+
+
+
+	#units{
+		opacity: 1;
+	}
+
+	
+	.gridsquare{
+		/*display: flex;*/
+	    justify-content: center;
+	    align-items: center;
+		/*width: 50px;*/
+		height: 30px;
+		border:1px solid #c3d1b4;
+	}
+
+	.gridsquare:hover{
+		background-color: #3e8e41;
+
+     	color: black;
+	}
+	.body {
+
+		width:100%;
+	  /*background-image: url("units.jpg");*/
+	}
+	#cells{
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; 
+		flex-flow: wrap;
+		width:100%;
+	}
+
+	.entry-name{
+		display: flex;
+		justify-content: space-between;
+		padding: 5px;
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
+
+	.entry-description{
+		display: flex;
+		justify-content: space-between;
+		padding: 5px;
+		margin-top: 5px;
+		margin-bottom: 5px;
+		width:100%;
+
+	}
+
+	.entry-units{
+		display: flex;
+		justify-content: space-between;
+		padding: 5px;
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
+	.new-entry{
+		
+		padding-top: 50px;
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+
+
+	.modal-row-entry{
+		padding-left: 20px;
+		padding-right: 20px;
+		padding-top: 10px;
+		padding-bottom: 10px;
+		display: grid;
+		grid-template-columns: 2fr 4fr 1fr
+	}
+
+
+	.modal-upvote {
+	  display: inline-block;
+	  overflow: hidden;
+	  width: 40px;
+	  height: 25px;
+	  cursor: pointer;
+	  background: url('upvote.png');
+	  background-position: 0 -25px;
+	  z-index: 100;
+	} 
+
+
+	.modal-upvote.on {
+	  background-position: 0 2px;
+	}
+
+
+
+	.modal-downvote {
+	  display: inline-block;
+	  overflow: hidden;
+	  width: 40px;
+	  height: 25px;
+	  cursor: pointer;
+	  background: url('downvote.png');
+	  background-position: 0 -25px;
+	  z-index: 100;
+	} 
+
+
+	.modal-downvote.on {
+	  background-position: 0 2px;
+	}
+	</style>
+
+	<script defer src="units.js" type="text/javascript">
+
+	</script>
+</head>
+
+
+<body class="body" onload="genBoxes()">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <!-- <div class="title" id="title">Example Modal</div> -->
+      <img class="cell-image" id="cell-image" src="">
+      <div class="modal-index" id="modal-index">YOU SHOULDN'T SEE THIS</div>
+      <button data-close-button class="close-button">&times;</button>
+    </div>
+
+    <div class="modal-values" id="modal-values">
+    	<div class="modal-body" id="modal-body"> YOU SHOULDN'T BE SEEING THIS</div>
+	</div>
+    
+    <form class="new-entry" id="new-entry" action="myFunction()">
+    	<div class="Call to acrion">Help us fill out the table</div>
+		<input class ="entry-name" type="text" id="entry-name" name="entry-name" required placeholder="Name of Unit Group">
+		<textarea class ="entry-description" type="text" rows="5" id="entry-description" name="entry-description" required placeholder="Description of Unit Group"></textarea>
+		<input class ="entry-units" type="text" id="entry-units" name="entry-units" required placeholder="Unit Formula" >
+	  <button type="button" onclick="submitTheForm(this)">Submit Entry</button>
+
+	</form> 
+
+	<div id="cells"></div>
+    
+  </div>
+  <div id="overlay"></div>
+</body>
+
+</html>
+
